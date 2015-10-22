@@ -20,7 +20,7 @@ public class Main {
 	Map<String,Integer> currentscore=new HashMap<String,Integer>();
 	List<Point> openplace=new ArrayList<Point>();
 	FileReader fr;
-	String filename="/Users/newuser/Downloads/game_boards/Westerplatte.txt";
+	String filename="/Users/newuser/Downloads/game_boards/Keren.txt";
 	int row;
 	int col;
 	String player="blue";
@@ -141,22 +141,107 @@ public class Main {
 		if(!canwork)
 			return false;
 		this.moveto(x, y, player);
-//		neighbours[0]=this.get(x+1, y);
-//		neighbours[1]=this.get(x-1, y);
-//		neighbours[2]=this.get(x, y+1);
-//		neighbours[3]=this.get(x, y-1);
 		for(int i=0;i<4;i++){
 			if(neighbours[i]==null)
 				continue;
 			if(neighbours[i].occupied&&!neighbours[i].player.equals(player)){
 				this.moveto(neighbours[i].x, neighbours[i].y, player);
-				break;
+//				need to break or not?
+//				break;
 			}
 		}
 		return canwork;
-		
-		
-		
+	}
+	
+	public boolean battle(int x,int y,String player){
+		Point temp=this.get(x,y);
+		if(temp.occupied)
+			return false;
+		Map<String,Integer> map=new HashMap<String,Integer>();
+		map.put("blue", 0);
+		map.put("green", 0);
+		int count1=0;
+		int count2=0;
+		for(int i=0;i<grid.length;i++){
+			for(int j=0;j<grid[0].length;j++){
+				if(grid[i][j].player!=null){
+					if(grid[i][j].player.equals("blue")){
+						count1++;
+						map.put("blue", map.get("blue")+grid[i][j].value);
+					}
+					else {
+						count2++;
+						map.put("green", map.get("green")+grid[i][j].value);
+					}
+				}
+			}
+		}
+//		get average
+		if(count1!=0)
+			map.put("blue", map.get("blue")/count1);
+		else 
+			map.put("blue",0);
+		if(count2!=0)
+			map.put("green", map.get("green")/count2);
+		else
+			map.put("green", 0);
+	
+		Point [] neighbours=new Point[4];
+		neighbours[0]=this.get(x+1, y);
+		neighbours[1]=this.get(x-1, y);
+		neighbours[2]=this.get(x, y+1);
+		neighbours[3]=this.get(x, y-1);
+		boolean canwork=false;
+		for(int i=0;i<4;i++){
+			if(neighbours[i]==null)
+				continue;
+			if(neighbours[i].occupied&&neighbours[i].player.equals(player)){
+				canwork=true;
+				break;
+			}
+		}
+		if(!canwork)
+			return false;
+		this.moveto(x, y, player);
+		String enemy=player.equals("blue")?"green":"blue";
+		for(int i=0;i<4;i++){
+			if(neighbours[i]==null)
+				continue;
+			if(neighbours[i].occupied&&!neighbours[i].player.equals(player)){
+//				Battle case
+				int bat1=(findpoints(neighbours[i].x,neighbours[i].y,enemy)+1)*map.get(enemy);
+				int bat2=(findpoints(neighbours[i].x,neighbours[i].y,player)+1)*map.get(player);
+//              Duel
+//				int bat1=map.get(enemy);
+//				int bat2=map.get(player);
+				
+//              Attrition
+				
+				
+//				which means we blitz
+				if(bat1<bat2)
+					this.moveto(neighbours[i].x, neighbours[i].y, player);
+//				break;
+			}
+		}
+		return canwork;
+	}
+	
+	public int findpoints(int x,int y,String player){
+		int result=0;
+//		String player=this.get(x,y).player;
+		Point [] neighbours=new Point[4];
+		neighbours[0]=this.get(x+1, y);
+		neighbours[1]=this.get(x-1, y);
+		neighbours[2]=this.get(x, y+1);
+		neighbours[3]=this.get(x, y-1);
+		for(Point hehe:neighbours){
+			if(hehe==null)
+				continue;
+			if(hehe.player.equals(player))
+				result+=1;
+		}
+		return result;
 	}
 	
 	public void printboard(){

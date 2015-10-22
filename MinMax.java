@@ -10,7 +10,7 @@ public class MinMax {
 	
 		nodesnumber++;
 //		String curr_team;
-	    int max_depth = 4;
+	    int max_depth = 3;
 	    String	max_team = "blue";
 	    String min_team="green";
 	    	Main board = new Main(grid);
@@ -57,13 +57,8 @@ public class MinMax {
 	    	}
 	    	  	int x = point.x;
 	    	    int y = point.y;
-//	    	    # Mark the location as captured
-//	    	    # loc refers to the square in board, but we want to equivalent square in grid to alter
-//	    	    Point temp = board.get(x,y);
 	    	    board.moveto(x, y, curr_team);
-//	    	    # we treat each square as a Para-Drop, then we check to see if it has any neighbors that belong
-//	    	    # to the current team...it is more advantageous to Death Blitz whenever possible
-	    	  
+	    	    
 	    	    	Point [] neighbours=new Point[4];
 	    	    neighbours[0]=board.get(x-1,y);
 	    	    neighbours[1]=board.get(x+1,y);

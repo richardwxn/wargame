@@ -19,10 +19,10 @@ public class PlayGame {
 		       Point point=new Point(1,curr_team);
 		       Main backup=new Main(board);
 			if(curr_team.equals("blue")){
-				Point result=abpruning.calculate("blue", "green", board, 0, point,Integer.MIN_VALUE,Integer.MAX_VALUE);
-//		    		Point result=minmax.calculate("blue", "green", board, 0, point);
+//				Point result=abpruning.calculate("blue", "green", board, 0, point,Integer.MIN_VALUE,Integer.MAX_VALUE);
+		    		Point result=minmax.calculate("blue", "green", board, 0, point);
 		    		System.out.println("first"+result);
-		    		if(board.bltiz(result.x,result.y,curr_team)){
+		    		if(board.battle(result.x,result.y,curr_team)){
 		    			board.grid[result.x][result.y].player=curr_team;
 		    			System.out.println("bltiz"+board.player);
 		    		}
@@ -40,7 +40,7 @@ public class PlayGame {
 		    		Point result=minmax.calculate("green", "blue", board, 0, point);
 		    		System.out.println("Second"+result);
 //		        move = calculate_abprune('green', 'blue', board)
-		    		if(board.bltiz(result.x,result.y,curr_team)){
+		    		if(board.battle(result.x,result.y,curr_team)){
 		    			 System.out.println("bltiz"+board.player);
 		    		}
 		    		else{
