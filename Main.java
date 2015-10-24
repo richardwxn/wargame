@@ -17,17 +17,17 @@ public class Main {
 	public Point [][] grid;
 //	0 is for one player, 1is for another
 //	public int [] currentscore=new int[2];
-	Map<String,Integer> currentscore=new HashMap<String,Integer>();
+	Map<String,Double> currentscore=new HashMap<String,Double>();
 	List<Point> openplace=new ArrayList<Point>();
 	FileReader fr;
-	String filename="/Users/newuser/Downloads/game_boards/Keren.txt";
+	String filename="/Users/newuser/Downloads/game_boards/Sevastopol.txt";
 	int row;
 	int col;
 	String player="blue";
 	public Main() throws IOException{
 		
-		currentscore.put("blue",0);
-		currentscore.put("green",0);
+		currentscore.put("blue",0.0);
+		currentscore.put("green",0.0);
 		List<String> lines=null;
 		try{
 		 lines= Files.readAllLines(Paths.get(filename), Charset.defaultCharset());
@@ -61,7 +61,7 @@ public class Main {
 	}
 	
 	public Main(Main copy){
-		this.currentscore=new HashMap<String,Integer>(copy.currentscore);
+		this.currentscore=new HashMap<String,Double>(copy.currentscore);
 		this.openplace=new ArrayList<Point>(copy.openplace);
 		this.row=copy.row;
 		this.col=copy.col;
@@ -157,9 +157,9 @@ public class Main {
 		Point temp=this.get(x,y);
 		if(temp.occupied)
 			return false;
-		Map<String,Integer> map=new HashMap<String,Integer>();
-		map.put("blue", 0);
-		map.put("green", 0);
+		Map<String,Double> map=new HashMap<String,Double>();
+		map.put("blue", 0.0);
+		map.put("green", 0.0);
 		int count1=0;
 		int count2=0;
 		for(int i=0;i<grid.length;i++){
@@ -180,11 +180,11 @@ public class Main {
 		if(count1!=0)
 			map.put("blue", map.get("blue")/count1);
 		else 
-			map.put("blue",0);
+			map.put("blue",0.0);
 		if(count2!=0)
 			map.put("green", map.get("green")/count2);
 		else
-			map.put("green", 0);
+			map.put("green", 0.0);
 	
 		Point [] neighbours=new Point[4];
 		neighbours[0]=this.get(x+1, y);
@@ -209,11 +209,11 @@ public class Main {
 				continue;
 			if(neighbours[i].occupied&&!neighbours[i].player.equals(player)){
 //				Battle case
-				int bat1=(findpoints(neighbours[i].x,neighbours[i].y,enemy)+1)*map.get(enemy);
-				int bat2=(findpoints(neighbours[i].x,neighbours[i].y,player)+1)*map.get(player);
+//				double bat1=(findpoints(neighbours[i].x,neighbours[i].y,enemy)+1)*map.get(enemy);
+//				double bat2=(findpoints(neighbours[i].x,neighbours[i].y,player)+1)*map.get(player);
 //              Duel
-//				int bat1=map.get(enemy);
-//				int bat2=map.get(player);
+				double bat1=map.get(enemy);
+				double bat2=map.get(player);
 				
 //              Attrition
 				
@@ -227,6 +227,15 @@ public class Main {
 		return canwork;
 	}
 	
+	public void attrition(){
+		for(int i=0;i<grid.length;i++){
+			for(int j=0;j<grid[0].length;j++){
+				grid[i][j].value=(grid[i][j].value*0.9);
+		}
+		
+		}	
+	}
+	
 	public int findpoints(int x,int y,String player){
 		int result=0;
 //		String player=this.get(x,y).player;
@@ -238,7 +247,7 @@ public class Main {
 		for(Point hehe:neighbours){
 			if(hehe==null)
 				continue;
-			if(hehe.player.equals(player))
+			else if(hehe.occupied&&hehe.player.equals(player))
 				result+=1;
 		}
 		return result;

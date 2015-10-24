@@ -3,15 +3,15 @@ package wargame;
 public class Point {
 	int x;
 	int y;
-	int value;
+	double value;
 	String player;
 	public boolean occupied=false;
-	public Point(int value,String player){
+	public Point(double value,String player){
 		this.value=value;
 		this.player=player;	
 		
 	}
-	public Point(int x,int y,int value,String player){
+	public Point(int x,int y,double value,String player){
 		this.x=x;
 		this.y=y;
 		this.value=value;

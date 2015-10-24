@@ -5,7 +5,7 @@ import java.util.List;
 
 public class AlphaBetaPruning {
 	int nodesnumber;
-	public Point calculate(String curr_team,String evil_team,Main grid,int depth,Point point,int alpha,int beta){
+	public Point calculate(String curr_team,String evil_team,Main grid,int depth,Point point,double alpha,double beta){
 		nodesnumber++;
 //		String curr_team;
 	    int max_depth = 5;
@@ -13,17 +13,17 @@ public class AlphaBetaPruning {
 	    String min_team="green";
 	    	Main board = new Main(grid);
 	    	Point result=new Point(point);
-	    	int retval;
+	    	double retval;
 	    	if(depth == 0){
 	    	        nodesnumber = 1;
 	    	       
 	    	        if (curr_team.equals(max_team)){
-	    	        	   int max=Integer.MIN_VALUE;
+	    	        	   double max=Integer.MIN_VALUE;
 	    	        		List<Point> copy=new ArrayList<Point>(board.openplace);
 //	    	        		List<Integer> ha=new LinkedList<Integer>();
 	    	        		for(Point open:copy){
 	    	        			
-	    	        			int value=calculate(evil_team, curr_team, board, depth+1, open,alpha,beta).value;
+	    	        			double value=calculate(evil_team, curr_team, board, depth+1, open,alpha,beta).value;
 	    	        			if(value>max){
 	    	        				result=new Point(open);
 	    	        				max=value;
@@ -39,10 +39,10 @@ public class AlphaBetaPruning {
 	    	        		return result;
 	    	        }
 	    	        else{    	        	
-	    	        	int min=Integer.MAX_VALUE;
+	    	        	double min=Integer.MAX_VALUE;
 	    	        	List<Point> copy=new ArrayList<Point>(board.openplace);
 	    	        	for(Point open:copy){
-	    	        			int value=calculate(evil_team, curr_team, board, depth+1, open,alpha,beta).value;
+	    	        			double value=calculate(evil_team, curr_team, board, depth+1, open,alpha,beta).value;
 	    	        			if(value<min){
 	    	        				result=new Point(open);
 	    	        				min=value;
@@ -112,7 +112,7 @@ public class AlphaBetaPruning {
 	    	        if(!curr_team.equals(max_team)){
 //	    	        		int max=Integer.MIN_VALUE;
 	    	        		for(Point open:board.openplace){
-	    	        			int value=calculate(evil_team, curr_team, board, depth+1, open,alpha,beta).value;
+	    	        			double value=calculate(evil_team, curr_team, board, depth+1, open,alpha,beta).value;
 //	    	        			beta=Math.min(value, beta);
 	    	        			if(value<beta){
 	    	        				result=new Point(open);
@@ -133,7 +133,7 @@ public class AlphaBetaPruning {
 //	    	        	int min=Integer.MAX_VALUE;
 	    	        	for(Point open:grid.openplace){
 //	    	        		System.out.println("alpha"+alpha);
-	    	        		int value=calculate(evil_team, curr_team, board, depth+1, open,alpha,beta).value;
+	    	        		double value=calculate(evil_team, curr_team, board, depth+1, open,alpha,beta).value;
 //	    	        		alpha=Math.max(value, alpha);
 	    	        		if(value>alpha){
     	        				result=new Point(open);

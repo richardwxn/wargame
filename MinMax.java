@@ -5,27 +5,30 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class MinMax {
-	int nodesnumber;
+	int nodesnumber1=0;
+	int nodesnumber2=0;
 	public Point calculate(String curr_team,String evil_team,Main grid,int depth,Point point){
-	
-		nodesnumber++;
+		if(curr_team.equals("blue"))
+			nodesnumber1++;
+		else if(curr_team.equals("green"))
+			nodesnumber2++;
 //		String curr_team;
-	    int max_depth = 3;
+	    int max_depth = 4;
 	    String	max_team = "blue";
 	    String min_team="green";
 	    	Main board = new Main(grid);
 	    	Point result=new Point(point);
-	    	int retval;
+	    	double retval;
 	    	if(depth == 0){
-	    	        nodesnumber = 1;
+//	    	        nodesnumber = 1;
 	    	       
 	    	        if (curr_team.equals(max_team)){
-	    	        	   int max=Integer.MIN_VALUE;
+	    	        	   double max=Integer.MIN_VALUE;
 	    	        		List<Point> copy=new ArrayList<Point>(board.openplace);
 //	    	        		List<Integer> ha=new LinkedList<Integer>();
 	    	        		for(Point open:copy){
 	    	        			
-	    	        			int value=calculate(evil_team, curr_team, board, depth+1, open).value;
+	    	        			double value=calculate(evil_team, curr_team, board, depth+1, open).value;
 	    	        			if(value>max){
 	    	        				result=new Point(open);
 	    	        				max=value;
@@ -41,10 +44,10 @@ public class MinMax {
 	    	        		return result;
 	    	        }
 	    	        else{    	        	
-	    	        	int min=Integer.MAX_VALUE;
+	    	        	double min=Integer.MAX_VALUE;
 	    	        	List<Point> copy=new ArrayList<Point>(board.openplace);
 	    	        	for(Point open:copy){
-	    	        			int value=calculate(evil_team, curr_team, board, depth+1, open).value;
+	    	        			double value=calculate(evil_team, curr_team, board, depth+1, open).value;
 	    	        			if(value<min){
 	    	        				result=new Point(open);
 	    	        				min=value;
@@ -110,11 +113,11 @@ public class MinMax {
 	    	    }
 	    	    else{
 	    	        if(curr_team.equals(max_team)){
-	    	        		int min=Integer.MAX_VALUE;
+	    	        		double min=Integer.MAX_VALUE;
 	    	        		List<Point> copy=new ArrayList<Point>(board.openplace);
 	    	        		for(Point open:copy){
 //		    	            min=Math.min(calculate(evil_team, curr_team, board, depth+1, open).value,min);
-	    	        		int value=calculate(evil_team, curr_team, board, depth+1, open).value;
+	    	        		double value=calculate(evil_team, curr_team, board, depth+1, open).value;
     	        			if(value<min){
     	        				result=new Point(open);
     	        				min=value;
@@ -125,11 +128,11 @@ public class MinMax {
 	    	            return result;
 	    	        }
 	    	        else{
-	    	        	int max=Integer.MIN_VALUE;
+	    	        	double max=Integer.MIN_VALUE;
 	    	        	List<Point> copy=new ArrayList<Point>(board.openplace);
 	    	        	for(Point open:copy){
 //	    	            max = Math.max(calculate(evil_team, curr_team, board, depth+1, open).value,max);
-	    	        		int value=calculate(evil_team, curr_team, board, depth+1, open).value;
+	    	        		double value=calculate(evil_team, curr_team, board, depth+1, open).value;
     	        			if(value>max){
     	        				result=new Point(open);
     	        				max=value;
@@ -140,4 +143,8 @@ public class MinMax {
 	    	    }
 	}
 	}
+	
+//	public int getnodesnumber(){
+//		return nodesnumber;
+//	}
 }
