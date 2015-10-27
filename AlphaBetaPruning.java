@@ -4,9 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AlphaBetaPruning {
-	int nodesnumber;
+	int nodesnumber1=0;
+	int nodesnumber2=0;
 	public Point calculate(String curr_team,String evil_team,Main grid,int depth,Point point,double alpha,double beta){
-		nodesnumber++;
+		if(curr_team.equals("blue"))
+			nodesnumber1++;
+		else if(curr_team.equals("green"))
+			nodesnumber2++;
 //		String curr_team;
 	    int max_depth = 5;
 	    String	max_team = "blue";
@@ -15,7 +19,6 @@ public class AlphaBetaPruning {
 	    	Point result=new Point(point);
 	    	double retval;
 	    	if(depth == 0){
-	    	        nodesnumber = 1;
 	    	       
 	    	        if (curr_team.equals(max_team)){
 	    	        	   double max=Integer.MIN_VALUE;
@@ -55,12 +58,8 @@ public class AlphaBetaPruning {
 	    	}
 	    	  	int x = point.x;
 	    	    int y = point.y;
-//	    	    # Mark the location as captured
-//	    	    # loc refers to the square in board, but we want to equivalent square in grid to alter
 //	    	    Point temp = board.get(x,y);
 	    	    board.moveto(x, y, curr_team);
-//	    	    # we treat each square as a Para-Drop, then we check to see if it has any neighbors that belong
-//	    	    # to the current team...it is more advantageous to Death Blitz whenever possible
 	    	  
 	    	    	Point [] neighbours=new Point[4];
 	    	    neighbours[0]=board.get(x-1,y);
@@ -68,20 +67,17 @@ public class AlphaBetaPruning {
 	    	    neighbours[2]=board.get(x,y+1);
 	    	    neighbours[3]=board.get(x,y-1);
 	    	  
-//	    	    neighbours = [grid.square_at((x+1, y)), grid.square_at((x-1,y)), grid.square_at((x,y+1)), grid.square_at((x,y-1))]
 	    	    for(Point temp:neighbours){
-//	    	        # check for wall
 	    	        if(temp==null)
 	    	            continue;
-//	    	        # check if we have a neighbor on our side (we only need one neighbor)
 	    	        else if(temp.occupied&&temp.player.equals(curr_team)){
-//	    	            # check the neighbors for ones on the enemy team
 	    	            for(Point evil:neighbours){
 	    	            	 	if(evil==null)
 	    		    	            continue;
 	    	                if(evil.occupied&&evil.player.equals(evil_team)){
 //	    	                	if(evil.value!=1)
 //	    	                		System.out.println("evil"+evil.value);
+	    	                	if(board.battle(evil.x, evil.y, curr_team)){
 	    	                    if(curr_team.equals(max_team)){
 //	    	                    		
 	    	                    		board.currentscore.put(max_team,board.currentscore.get(max_team)+evil.value);
@@ -96,7 +92,7 @@ public class AlphaBetaPruning {
 	    	                 evil.player = curr_team;
 	    	                 board.grid[evil.x][evil.y].player=curr_team;
 	    	                }
-	    	            
+	    	                }
 	    	            }
 	    	            break;
 	    	    }
@@ -109,14 +105,15 @@ public class AlphaBetaPruning {
 	    	        return result;
 	    	    }
 	    	    else{
-	    	        if(!curr_team.equals(max_team)){
+	    	        if(curr_team.equals(max_team)){
 //	    	        		int max=Integer.MIN_VALUE;
 	    	        		for(Point open:board.openplace){
 	    	        			double value=calculate(evil_team, curr_team, board, depth+1, open,alpha,beta).value;
 //	    	        			beta=Math.min(value, beta);
-	    	        			if(value<beta){
+	    	        			if(value>alpha){
 	    	        				result=new Point(open);
-	    	        				beta=value;
+	    	        				alpha=value;
+	    	        				result.value=value;
 	    	        			}
 		    	            if(alpha>=beta){
 //		    	            	 System.out.print("haha");
@@ -126,7 +123,7 @@ public class AlphaBetaPruning {
 	    	        		}
 	    	        		
 //	    	            retval[1] = loc
-	    	        		result.value=beta;
+	    	        		result.value=alpha;
 	    	            return result;
 	    	        }
 	    	        else{
@@ -135,15 +132,16 @@ public class AlphaBetaPruning {
 //	    	        		System.out.println("alpha"+alpha);
 	    	        		double value=calculate(evil_team, curr_team, board, depth+1, open,alpha,beta).value;
 //	    	        		alpha=Math.max(value, alpha);
-	    	        		if(value>alpha){
+	    	        		if(value<beta){
     	        				result=new Point(open);
-    	        				alpha=value;
+    	        				beta=value;
+    	        				result.value=value;
     	        			}
 		    	        if(alpha>=beta)
 	    	        		break;
 	    	        	}
 	    	        	
-	    	        	result.value=alpha;
+	    	        	result.value=beta;
 	    	            return result;
 	    	        }
 	    	    }

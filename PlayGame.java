@@ -21,9 +21,10 @@ public class PlayGame {
 		       Point point=new Point(1,curr_team);
 //		       Main backup=new Main(board);
 			if(curr_team.equals("blue")){
-//				Point result=abpruning.calculate("blue", "green", board, 0, point,Integer.MIN_VALUE,Integer.MAX_VALUE);
+//			
 				long startTime = System.currentTimeMillis();
-				Point result=minmax.calculate("blue", "green", board, 0, point);
+				Point result=abpruning.calculate("blue", "green", board, 0, point,Integer.MIN_VALUE,Integer.MAX_VALUE);
+//				Point result=minmax.calculate("blue", "green", board, 0, point);
 		    		long endTime=System.currentTimeMillis();
 		    		
 		    		time1=(moves[0]*time1+(endTime-startTime))/(moves[0]+1);
@@ -35,7 +36,9 @@ public class PlayGame {
 		        else{
 		        		board.drop(result.x,result.y,curr_team);
 		        }
-		    		board.attrition();
+		    		
+//		    		Only requires when there is attrition
+//		    		board.attrition();
 		        board.alternateplayer();
 //		        System.out.println("hehe"+board.currentscore.get("blue"));
 //				System.out.println(board.currentscore.get("green"));
@@ -43,8 +46,8 @@ public class PlayGame {
 		}
 		    else{
 		    		long startTime = System.currentTimeMillis();
-//		     	Point result=abpruning.calculate("green", "blue", board, 0, point,Integer.MIN_VALUE,Integer.MAX_VALUE);
-		    		Point result=minmax.calculate("green", "blue", board, 0, point);
+		     	Point result=abpruning.calculate("green", "blue", board, 0, point,Integer.MIN_VALUE,Integer.MAX_VALUE);
+//		    		Point result=minmax.calculate("green", "blue", board, 0, point);
 		    		
 		    		long endTime=System.currentTimeMillis();
 		    		
@@ -58,21 +61,22 @@ public class PlayGame {
 		    		else{
 	        		board.drop(result.x,result.y,curr_team);
 		    		}
-		    		board.attrition();
+//		    		For the attrtion part
+//		    		board.attrition();
 		        board.alternateplayer();
 //		        System.out.println("hehe"+board.currentscore.get("blue"));
 //				System.out.println(board.currentscore.get("green"));
 			}
 			
 		}
-		System.out.println("hehe"+board.currentscore.get("blue"));
-		System.out.println(board.currentscore.get("green"));
-		System.out.println(minmax.nodesnumber1);
-		System.out.println(minmax.nodesnumber2);
-		System.out.println(minmax.nodesnumber1/moves[0]);
-		System.out.println(minmax.nodesnumber2/moves[1]);
-		System.out.println(time1);
-		System.out.println(time2);
+		System.out.println("blue score "+board.currentscore.get("blue"));
+		System.out.println("green score "+board.currentscore.get("green"));
+		System.out.println("blue node number "+abpruning.nodesnumber1);
+		System.out.println("green node number "+abpruning.nodesnumber2);
+		System.out.println("blue average node number per move "+abpruning.nodesnumber1/moves[0]);
+		System.out.println("green average node number per move "+abpruning.nodesnumber2/moves[1]);
+		System.out.println("blue average running time per move "+time1+"ms");
+		System.out.println("green average running time per move "+time2+"ms");
 		board.printboard();
 	}
 }

@@ -20,7 +20,7 @@ public class Main {
 	Map<String,Double> currentscore=new HashMap<String,Double>();
 	List<Point> openplace=new ArrayList<Point>();
 	FileReader fr;
-	String filename="/Users/newuser/Downloads/game_boards/Sevastopol.txt";
+	String filename="/Users/newuser/Downloads/game_boards/Smolensk.txt";
 	int row;
 	int col;
 	String player="blue";
@@ -209,11 +209,11 @@ public class Main {
 				continue;
 			if(neighbours[i].occupied&&!neighbours[i].player.equals(player)){
 //				Battle case
-//				double bat1=(findpoints(neighbours[i].x,neighbours[i].y,enemy)+1)*map.get(enemy);
-//				double bat2=(findpoints(neighbours[i].x,neighbours[i].y,player)+1)*map.get(player);
+				double bat1=(findpoints(neighbours[i].x,neighbours[i].y,enemy)+1)*map.get(enemy);
+				double bat2=(findpoints(neighbours[i].x,neighbours[i].y,player)+1)*map.get(player);
 //              Duel
-				double bat1=map.get(enemy);
-				double bat2=map.get(player);
+//				double bat1=map.get(enemy);
+//				double bat2=map.get(player);
 				
 //              Attrition
 				

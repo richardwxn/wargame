@@ -68,20 +68,17 @@ public class MinMax {
 	    	    neighbours[2]=board.get(x,y+1);
 	    	    neighbours[3]=board.get(x,y-1);
 	    	  
-//	    	    neighbours = [grid.square_at((x+1, y)), grid.square_at((x-1,y)), grid.square_at((x,y+1)), grid.square_at((x,y-1))]
 	    	    for(Point temp:neighbours){
-//	    	        # check for wall
 	    	        if(temp==null)
 	    	            continue;
-//	    	        # check if we have a neighbor on our side (we only need one neighbor)
 	    	        else if(temp.occupied&&temp.player.equals(curr_team)){
 //	    	            # check the neighbors for ones on the enemy team
 	    	            for(Point evil:neighbours){
 	    	            	 	if(evil==null)
 	    		    	            continue;
 	    	                if(evil.occupied&&evil.player.equals(evil_team)){
-//	    	                	if(evil.value!=1)
-//	    	                		System.out.println("evil"+evil.value);
+	    	                		
+	    	                	
 	    	                    if(curr_team.equals(max_team)){
 //	    	                    		
 	    	                    		board.currentscore.put(max_team,board.currentscore.get(max_team)+evil.value);
@@ -96,7 +93,6 @@ public class MinMax {
 	    	                 evil.player = curr_team;
 	    	                 board.grid[evil.x][evil.y].player=curr_team;
 	    	                }
-	    	            
 	    	            }
 	    	            break;
 	    	    }
@@ -112,7 +108,7 @@ public class MinMax {
 	    	        return result;
 	    	    }
 	    	    else{
-	    	        if(curr_team.equals(max_team)){
+	    	        if(!curr_team.equals(max_team)){
 	    	        		double min=Integer.MAX_VALUE;
 	    	        		List<Point> copy=new ArrayList<Point>(board.openplace);
 	    	        		for(Point open:copy){
