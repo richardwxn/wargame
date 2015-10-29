@@ -6,7 +6,7 @@ import java.util.List;
 public class AlphaBetaPruning {
 	int nodesnumber1=0;
 	int nodesnumber2=0;
-	public Point calculate(String curr_team,String evil_team,Main grid,int depth,Point point,double alpha,double beta){
+	public Point calculate(String curr_team,String evil_team,Main grid,Main nima,int depth,Point point,double alpha,double beta){
 		if(curr_team.equals("blue"))
 			nodesnumber1++;
 		else if(curr_team.equals("green"))
@@ -16,6 +16,7 @@ public class AlphaBetaPruning {
 	    String	max_team = "blue";
 	    String min_team="green";
 	    	Main board = new Main(grid);
+	    Main nimab = new Main(nima);
 	    	Point result=new Point(point);
 	    	double retval;
 	    	if(depth == 0){
@@ -26,7 +27,7 @@ public class AlphaBetaPruning {
 //	    	        		List<Integer> ha=new LinkedList<Integer>();
 	    	        		for(Point open:copy){
 	    	        			
-	    	        			double value=calculate(evil_team, curr_team, board, depth+1, open,alpha,beta).value;
+	    	        			double value=calculate(evil_team, curr_team, board, nimab,depth+1, open,alpha,beta).value;
 	    	        			if(value>max){
 	    	        				result=new Point(open);
 	    	        				max=value;
@@ -45,7 +46,7 @@ public class AlphaBetaPruning {
 	    	        	double min=Integer.MAX_VALUE;
 	    	        	List<Point> copy=new ArrayList<Point>(board.openplace);
 	    	        	for(Point open:copy){
-	    	        			double value=calculate(evil_team, curr_team, board, depth+1, open,alpha,beta).value;
+	    	        			double value=calculate(evil_team, curr_team, board,nimab, depth+1, open,alpha,beta).value;
 	    	        			if(value<min){
 	    	        				result=new Point(open);
 	    	        				min=value;
@@ -80,13 +81,13 @@ public class AlphaBetaPruning {
 	    	                	if(board.battle(evil.x, evil.y, curr_team)){
 	    	                    if(curr_team.equals(max_team)){
 //	    	                    		
-	    	                    		board.currentscore.put(max_team,board.currentscore.get(max_team)+evil.value);
-	    	                    		board.currentscore.put(min_team,board.currentscore.get(min_team)-evil.value);
+	    	                    		board.currentscore.put(max_team,board.currentscore.get(max_team)+nima.grid[evil.x][evil.y].value);
+	    	                    		board.currentscore.put(min_team,board.currentscore.get(min_team)-nima.grid[evil.x][evil.y].value);
 	    	                    }
 	    	                    else{
 //	    	                    	System.out.println("evil"+evil.value);
-	    	                    	board.currentscore.put(max_team,board.currentscore.get(max_team)-evil.value);
-    	                    		board.currentscore.put(min_team,board.currentscore.get(min_team)+evil.value);
+	    	                    	board.currentscore.put(max_team,board.currentscore.get(max_team)-nima.grid[evil.x][evil.y].value);
+    	                    		board.currentscore.put(min_team,board.currentscore.get(min_team)+nima.grid[evil.x][evil.y].value);
 	    	                    }
 //	    	                    System.out.println(evil.player+"\tcpnta"+curr_team);
 	    	                 evil.player = curr_team;
@@ -108,7 +109,7 @@ public class AlphaBetaPruning {
 	    	        if(curr_team.equals(max_team)){
 //	    	        		int max=Integer.MIN_VALUE;
 	    	        		for(Point open:board.openplace){
-	    	        			double value=calculate(evil_team, curr_team, board, depth+1, open,alpha,beta).value;
+	    	        			double value=calculate(evil_team, curr_team, board, nimab,depth+1, open,alpha,beta).value;
 //	    	        			beta=Math.min(value, beta);
 	    	        			if(value>alpha){
 	    	        				result=new Point(open);
@@ -130,7 +131,7 @@ public class AlphaBetaPruning {
 //	    	        	int min=Integer.MAX_VALUE;
 	    	        	for(Point open:grid.openplace){
 //	    	        		System.out.println("alpha"+alpha);
-	    	        		double value=calculate(evil_team, curr_team, board, depth+1, open,alpha,beta).value;
+	    	        		double value=calculate(evil_team, curr_team, board,nimab, depth+1, open,alpha,beta).value;
 //	    	        		alpha=Math.max(value, alpha);
 	    	        		if(value<beta){
     	        				result=new Point(open);

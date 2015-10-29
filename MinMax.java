@@ -119,7 +119,6 @@ public class MinMax {
     	        				min=value;
     	        			}
 	    	        		}
-//	    	            retval[1] = loc
 	    	        		result.value=min;
 	    	            return result;
 	    	        }

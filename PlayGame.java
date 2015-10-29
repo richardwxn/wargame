@@ -6,6 +6,7 @@ public class PlayGame {
 	public static void main(String[] args) throws IOException{
 		
 		Main board=new Main();
+		Main boardcopy=new Main();
 		MinMax minmax=new MinMax();
 		AlphaBetaPruning abpruning=new AlphaBetaPruning();
 		String curr_team;
@@ -23,7 +24,7 @@ public class PlayGame {
 			if(curr_team.equals("blue")){
 //			
 				long startTime = System.currentTimeMillis();
-				Point result=abpruning.calculate("blue", "green", board, 0, point,Integer.MIN_VALUE,Integer.MAX_VALUE);
+				Point result=abpruning.calculate("blue", "green", board, boardcopy,0, point,Integer.MIN_VALUE,Integer.MAX_VALUE);
 //				Point result=minmax.calculate("blue", "green", board, 0, point);
 		    		long endTime=System.currentTimeMillis();
 		    		
@@ -38,7 +39,7 @@ public class PlayGame {
 		        }
 		    		
 //		    		Only requires when there is attrition
-//		    		board.attrition();
+		    		board.attrition();
 		        board.alternateplayer();
 //		        System.out.println("hehe"+board.currentscore.get("blue"));
 //				System.out.println(board.currentscore.get("green"));
@@ -46,7 +47,7 @@ public class PlayGame {
 		}
 		    else{
 		    		long startTime = System.currentTimeMillis();
-		     	Point result=abpruning.calculate("green", "blue", board, 0, point,Integer.MIN_VALUE,Integer.MAX_VALUE);
+		     	Point result=abpruning.calculate("green", "blue", board,boardcopy, 0, point,Integer.MIN_VALUE,Integer.MAX_VALUE);
 //		    		Point result=minmax.calculate("green", "blue", board, 0, point);
 		    		
 		    		long endTime=System.currentTimeMillis();
@@ -62,7 +63,7 @@ public class PlayGame {
 	        		board.drop(result.x,result.y,curr_team);
 		    		}
 //		    		For the attrtion part
-//		    		board.attrition();
+		    		board.attrition();
 		        board.alternateplayer();
 //		        System.out.println("hehe"+board.currentscore.get("blue"));
 //				System.out.println(board.currentscore.get("green"));
@@ -77,6 +78,23 @@ public class PlayGame {
 		System.out.println("green average node number per move "+abpruning.nodesnumber2/moves[1]);
 		System.out.println("blue average running time per move "+time1+"ms");
 		System.out.println("green average running time per move "+time2+"ms");
-		board.printboard();
+//		board.printboard();
+		Point[][] grid = boardcopy.grid;
+		double [] finalscore=new double[]{0,0};
+		StringBuilder sb=new StringBuilder();
+		for(int i=0;i<grid.length;i++){
+			for(int j=0;j<grid[0].length;j++){
+				sb.append(board.grid[i][j].player);
+				sb.append(grid[i][j].value);
+				if(board.grid[i][j].player.equals("blue"))
+					finalscore[0]+=grid[i][j].value;
+				else
+					finalscore[1]+=grid[i][j].value;
+			}
+			sb.append("\n");
+		}
+		System.out.println("blue score "+finalscore[0]);
+		System.out.println("green score "+finalscore[1]);
+		System.out.println(sb.toString());
 	}
 }
